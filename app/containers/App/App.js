@@ -9,10 +9,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
+import { HomePage, WorkerPage, NotFoundPage } from 'containers';
 
-import HomePage from 'containers/HomePage/Loadable';
-import WorkerPage from 'containers/WorkerPage/Loadable';
-import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import './style.scss';
 
