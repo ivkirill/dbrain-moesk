@@ -2,13 +2,13 @@ import {
   LOAD_REPOS,
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS_ERROR,
-} from '../constants';
+} from '/constants/app';
 
 import {
   loadRepos,
   reposLoaded,
   repoLoadingError,
-} from '../actions';
+} from '/actions/app';
 
 describe('App Actions', () => {
   describe('loadRepos', () => {

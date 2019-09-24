@@ -9,8 +9,8 @@ import './style.scss';
 
 export default function NotFound() {
   return (
-    <article>
-      <h1>Page not found.</h1>
-    </article>
+    <div className="not-found-page">
+      <h1>Page not found</h1>
+    </div>
   );
 }
