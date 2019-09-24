@@ -1,19 +1,39 @@
 .worker-page {
-  h1 {
-    font-size: 2em;
-    margin-bottom: 0.25em;
+  padding: 22px 210px;
+  position: relative;
+
+  .worker-back-button {
+    margin-left: -150px;
+    margin-top: 50px;
+    position: absolute;
   }
 
-  ul {
-    font-family: Georgia, Times, 'Times New Roman', serif;
-    padding-left: 1.75em;
+  .worker-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 24px;
+  }
 
-    li {
-      margin: 1em 0;
+  .content-row + .content-row {
+    margin-top: 32px;
+  }
 
-      p.title {
-        font-weight: bold;
-      }
+  h4 {
+    font-size: 24px;
+    line-height: 36px;
+    color: #AAA;
+    margin: 0 0 4px;
+    font-weight: normal;
+  }
+
+  .text {
+    font-size: 24px;
+    line-height: 36px;
+    color: #111;
+    margin: 0;
+
+    &.date {
+      color: #1356A8;
     }
   }
 }

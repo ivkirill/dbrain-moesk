@@ -1,5 +1,5 @@
 import React from 'react';
-import { Logo, CrossIcon} from 'components/Icons';
+import { Logo, CrossIcon } from 'components/Icons';
 import MOESK from 'images/MOESK.png';
 import './style.scss';
 

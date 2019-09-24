@@ -17,8 +17,8 @@ class Button extends React.PureComponent {
   }
 
   render() {
-    const { text, link, color, isActive = false, isFade = false } = this.props;
-    const classNames = cn('button', color, isActive && 'active', isFade && 'fade');
+    const { text, link, className, color, isActive = false, isFade = false } = this.props;
+    const classNames = cn('button', className, color, isActive && 'active', isFade && 'fade');
 
     if (link) {
       return (
@@ -38,6 +38,7 @@ class Button extends React.PureComponent {
 
 Button.propTypes = {
   text: PropTypes.string,
+  className: PropTypes.string,
   link: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.func,
