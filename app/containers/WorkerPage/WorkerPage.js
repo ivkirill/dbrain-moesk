@@ -6,29 +6,93 @@
 import React from 'react';
 import cn from 'classnames';
 import { Helmet } from 'react-helmet';
-import Chartkick, { PieChart } from 'react-chartkick';
-import Highcharts from 'highcharts'
 import Button from 'components/Button';
 import Caption from 'components/Caption';
+import XRange from 'components/XRange';
+import ChartPie from 'components/ChartPie';
 import { BackIcon } from 'components/Icons';
 import './style.scss';
 
-Chartkick.use(Highcharts)
-
 export default class WorkerPage extends React.Component {
   render() {
-    const { match } = this.props;
-    const { params: { date, id } } = match;
-
+    const {
+      date,
+      unit,
+      role,
+      team,
+      work_type,
+      department,
+      activity,
+      work,
+    } = this.props;
     const backClassNames = cn('worker-back-button', 'back');
 
-    const pieData = { 'Blueberry': 44, 'Strawberry': 23 };
-    const pieColor = ["#000", "#444", '#AAA'];
+    const seriesActivity = [{
+      pointWidth: 20,
+      dataLabels: {
+        enabled: true
+      },
+      data: [
+        ...activity.map(item => {
+          const date = new Date(item.start_at);
+          const date2 = new Date(item.end_at);
+
+          console.log(item);
+
+          const time = new Intl.DateTimeFormat('ru-RU', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+          }).format(date);
+
+          return {
+            x: date.getTime(),
+            x2: date2.getTime(),
+            y: 0
+          };
+        }),
+        ...work.map(item => {
+          const date = new Date(item.start_at);
+          const date2 = new Date(item.end_at);
+
+          console.log(item);
+
+          const time = new Intl.DateTimeFormat('ru-RU', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+          }).format(date);
+
+          return {
+            x: date.getTime(),
+            x2: date2.getTime(),
+            y: 1
+          };
+        }),
+      ],
+    }]
+
+    const seriesPie = [{
+      name: 'Brands',
+      colorByPoint: true,
+      data: [{
+        name: 'Работа',
+        y: 48,
+      }, {
+        name: 'Производственная активность',
+        y: 37
+      }, {
+        name: 'Сопутствующие активности',
+        y: 21
+      }]
+    }]
+
+    console.log(seriesActivity);
 
     return (
       <div className="worker-page">
         <Helmet>
-          <title>{`Трекер ${id} за ${date}`}</title>
+          <title>{`Трекер ${unit} за ${date}`}</title>
           <meta
             name="description"
             content="Feature page of React.js Boilerplate application"
@@ -58,24 +122,24 @@ export default class WorkerPage extends React.Component {
 
             <div className="content-row">
               <h4>Вид работ</h4>
-              <div className="text">Ремонт оборудования ТП 6–10 кВ</div>
+              <div className="text">{work_type}</div>
             </div>
           </div>
 
           <div className="worker-content-column">
             <div className="content-row">
               <h4>Отделение</h4>
-              <div className="text">Садовническая, 13</div>
+              <div className="text">{department}</div>
             </div>
 
             <div className="content-row">
               <h4>Роль</h4>
-              <div className="text">Мастер</div>
+              <div className="text">{role}</div>
             </div>
 
             <div className="content-row">
               <h4>Бригада</h4>
-              <div className="text">V гр. ИРЭС</div>
+              <div className="text">{team}</div>
             </div>
           </div>
 
@@ -83,9 +147,13 @@ export default class WorkerPage extends React.Component {
             <div className="content-row">
               <h4>Дневная статистика</h4>
 
-              <PieChart data={pieData} legend="left" colors={pieColor} suffix="%" />
+              <ChartPie series={seriesPie} />
             </div>
           </div>
+        </div>
+
+        <div className="worker-activity">
+          <XRange series={seriesActivity} />
         </div>
       </div>
     );

@@ -82,10 +82,6 @@ export default class HomePage extends React.PureComponent {
     const { filters, departments, names, dates } = this.state;
     const { department, name, date } = filters;
 
-    const id = '123';
-    const date_fake = '2019-09-10';
-    const link = `workers/${id}/workdays/${date_fake}`;
-
     return (
       <article>
         <Helmet>
@@ -112,7 +108,7 @@ export default class HomePage extends React.PureComponent {
                 <Datepicker onChange={this.handleDate} options={dates} />
 
                 {date &&
-                  <Button color="blue" link={link} text="Готово" />
+                  <Button color="blue" link={`workers/${name}/workdays/${date}`} text="Готово" />
                 }
               </div>
             </>

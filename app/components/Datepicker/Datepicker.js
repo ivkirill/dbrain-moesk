@@ -18,7 +18,7 @@ class Datepicker extends React.PureComponent {
     this.setState({ date, open: false });
 
     if (onChange) {
-      onChange(date);
+      onChange(new Date(date).toISOString().substring(0, 10));
     }
   }
 

@@ -38,7 +38,10 @@ class Button extends React.PureComponent {
 
 Button.propTypes = {
   value: PropTypes.string,
-  text: PropTypes.string,
+  text: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
   className: PropTypes.string,
   link: PropTypes.oneOfType([
     PropTypes.string,
