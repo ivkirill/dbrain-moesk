@@ -9,6 +9,7 @@
   display: inline-block;
   text-decoration: none;
   cursor: pointer;
+  user-select: none;
 
   &.active {
     background-color: #111;

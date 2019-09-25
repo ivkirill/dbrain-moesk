@@ -1,5 +1,25 @@
-* {
-  box-sizing: border-box;
+@font-face {
+  font-family: 'TT Norms';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local('TT Norms'),
+    local('TT Norms regular'),
+    url('/!file-loader?name=[name].[ext]!./fonts/TTNorms_regular.woff2') format('woff2'),
+    url('/!file-loader?name=[name].[ext]!./fonts/TTNorms_regular.woff') format('woff'),
+    url('/!file-loader?name=[name].[ext]!./fonts/TTNorms_regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'TT Norms';
+  font-style: normal;
+  font-weight: 500;
+  src:
+    local('TT Norms'),
+    local('TT Norms medium'),
+    url('/!file-loader?name=[name].[ext]!./fonts/TTNorms_medium.woff') format('woff'),
+    url('/!file-loader?name=[name].[ext]!./fonts/TTNorms_medium.woff2') format('woff2'),
+    url('/!file-loader?name=[name].[ext]!./fonts/TTNorms_medium.ttf') format('truetype');
 }
 
 html,
@@ -9,11 +29,7 @@ body {
 }
 
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-body.fontLoaded {
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'TT Norms', Helvetica, Arial, sans-serif;
 }
 
 #app {

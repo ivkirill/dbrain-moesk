@@ -4,7 +4,7 @@ import Button from 'components/Button';
 
 import './style.scss';
 
-const Filter = ({ caption, options, active = '', onChange }) => {
+const Filter = ({ options, active = '', onChange }) => {
   const hasActive = Boolean(active);
 
   return (
@@ -28,8 +28,9 @@ const Filter = ({ caption, options, active = '', onChange }) => {
 };
 
 Filter.propTypes = {
-  caption: PropTypes.string,
   options: PropTypes.array,
+  active: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 export default Filter;

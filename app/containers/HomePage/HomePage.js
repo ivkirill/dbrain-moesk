@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import Filter from 'components/Filter';
 import Button from 'components/Button';
 import Caption from 'components/Caption';
+import Datepicker from 'components/Datepicker';
 import './style.scss';
 
 export default class HomePage extends React.PureComponent {
@@ -107,7 +108,7 @@ export default class HomePage extends React.PureComponent {
               <Caption text="Дата" />
 
               <div className="home-row">
-                <Filter onChange={this.handleDate} options={dates} active={date} />
+                <Datepicker onChange={this.handleDate} options={dates} />
 
                 {date &&
                   <Button color="blue" link={link} text="Готово" />

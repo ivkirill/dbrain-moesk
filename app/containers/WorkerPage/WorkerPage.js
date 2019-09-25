@@ -6,14 +6,14 @@
 import React from 'react';
 import cn from 'classnames';
 import { Helmet } from 'react-helmet';
-import { PieChart } from 'react-chartkick';
-import 'chart.js'
-
+import Chartkick, { PieChart } from 'react-chartkick';
+import Highcharts from 'highcharts'
 import Button from 'components/Button';
 import Caption from 'components/Caption';
 import { BackIcon } from 'components/Icons';
 import './style.scss';
 
+Chartkick.use(Highcharts)
 
 export default class WorkerPage extends React.Component {
   render() {
@@ -83,7 +83,7 @@ export default class WorkerPage extends React.Component {
             <div className="content-row">
               <h4>Дневная статистика</h4>
 
-              <PieChart data={pieData} legend="bottom" colors={pieColor} suffix="%" />
+              <PieChart data={pieData} legend="left" colors={pieColor} suffix="%" />
             </div>
           </div>
         </div>
