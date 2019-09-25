@@ -9,11 +9,11 @@ const Filter = ({ options, active = '', onChange }) => {
 
   return (
     <div className="filter">
-      {options && options.map((option, index) => {
+      {options && options.map(({ name, value }, index) => {
         let props = {};
 
         if (hasActive) {
-          if (option === active) {
+          if (value === active) {
             props.isActive = true;
           }
           else {
@@ -21,7 +21,7 @@ const Filter = ({ options, active = '', onChange }) => {
           }
         }
 
-        return (<Button text={option} onClick={onChange} key={index} {...props} />);
+        return (<Button text={name} value={value} onClick={onChange} key={index} {...props} />);
       })}
     </div>
   );

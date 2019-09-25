@@ -1,5 +1,4 @@
 import React, { If } from 'react';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Filter from 'components/Filter';
 import Button from 'components/Button';
@@ -10,40 +9,43 @@ import './style.scss';
 export default class HomePage extends React.PureComponent {
   state = {
     filters: {
-      departament: '',
+      department: '',
       name: '',
       date: '',
     },
 
-    departaments: [],
+    departments: [],
     names: [],
     dates: [],
   }
 
-  componentDidMount() {
-    const { repos } = this.props;
-    const departaments = Object.keys(repos.departaments);
+  async componentDidMount() {
+    const { data } = this.props;
+    const departments = Object.keys(data).map(name => ({ value: name, name }));
 
-    this.setState({ departaments });
+    this.setState({ departments })
   }
 
-  handleDepartament = (departament) => {
-    const { repos } = this.props;
+  handleDepartment = (department) => {
+    const { data } = this.props;
+
     const filters = {
       ...this.state.filters,
-      departament,
+      department,
       name: '',
       date: '',
     }
 
-    const names = Object.keys(repos.departaments[departament]);
+    const names = Object.keys(data[department]).map(worker => {
+      return { value: worker, name: data[department][worker].name };
+    });
 
     this.setState({ filters, names });
   }
 
   handleName = (name) => {
-    const { repos } = this.props;
-    const { filters: { departament } } = this.state;
+    const { data } = this.props;
+    const { filters: { department } } = this.state;
 
     const filters = {
       ...this.state.filters,
@@ -51,13 +53,12 @@ export default class HomePage extends React.PureComponent {
       date: '',
     }
 
-    const dates = Object.keys(repos.departaments[departament][name]);
-
+    const dates = data[department][name].dates;
     this.setState({ filters, dates });
   }
 
   handleDate = (date) => {
-    const { filters: { departament, name } } = this.state;
+    const { filters: { department, name } } = this.state;
 
     const filters = {
       ...this.state.filters,
@@ -69,7 +70,7 @@ export default class HomePage extends React.PureComponent {
 
   getLink = () => {
     const { filters } = this.state;
-    const { departament, name, date } = filters;
+    const { department, name, date } = filters;
 
     const id = '123';
     const date_fake = '2019-09-10';
@@ -78,8 +79,8 @@ export default class HomePage extends React.PureComponent {
   }
 
   render() {
-    const { filters, departaments, names, dates } = this.state;
-    const { departament, name, date } = filters;
+    const { filters, departments, names, dates } = this.state;
+    const { department, name, date } = filters;
 
     const id = '123';
     const date_fake = '2019-09-10';
@@ -93,9 +94,9 @@ export default class HomePage extends React.PureComponent {
 
         <div className="home-page">
           <Caption text="Отделение" />
-          <Filter onChange={this.handleDepartament} options={departaments} active={departament} />
+          <Filter onChange={this.handleDepartment} options={departments} active={department} />
 
-          {departament && (
+          {department && (
             <>
               <Caption text="ФИО" />
 
@@ -121,12 +122,3 @@ export default class HomePage extends React.PureComponent {
     );
   }
 }
-
-// HomePage.propTypes = {
-//   loading: PropTypes.bool,
-//   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-//   repos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-//   onSubmitForm: PropTypes.func,
-//   username: PropTypes.string,
-//   onChangeUsername: PropTypes.func
-// };

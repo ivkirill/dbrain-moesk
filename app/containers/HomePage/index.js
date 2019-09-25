@@ -1,39 +1,42 @@
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { createStructuredSelector } from 'reselect';
-import injectReducer from 'utils/injectReducer';
-import injectSaga from 'utils/injectSaga';
-import {
-  makeSelectRepos,
-  makeSelectLoading,
-  makeSelectError
-} from 'selectors/app';
-import { loadRepos } from 'actions/app';
-import { changeUsername } from 'actions/home';
-import { makeSelectUsername } from 'selectors/home';
-import reducer from 'reducers/home';
-import saga from 'saga/home';
+import React from 'react';
+import Fetcher from 'components/Fetcher';
 import HomePage from './HomePage';
 
-const mapDispatchToProps = (dispatch) => ({
-  onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
-  onSubmitForm: (evt) => {
-    if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-    dispatch(loadRepos());
-  }
-});
+const WORKERS_URL = 'http://hetz3.dbrain.io:23008/workers';
 
-const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
-  loading: makeSelectLoading(),
-  error: makeSelectError()
-});
+const Component = () =>
+  <Fetcher url={WORKERS_URL}>
+    {({ data, isLoading, error }) => {
+      if (!data) {
+        return <p>No data yet ...</p>;
+      }
+      if (error) {
+        return <p>{error.message}</p>;
+      }
+      if (isLoading) {
+        return <p>Loading ...</p>;
+      }
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+      const props = {
+        data: {},
+      };
 
-const withReducer = injectReducer({ key: 'home', reducer });
-const withSaga = injectSaga({ key: 'home', saga });
+      const departments = props.data;
 
-export default compose(withReducer, withSaga, withConnect)(HomePage);
-export { mapDispatchToProps };
+      data.forEach(item => {
+        const department = item.department;
+        departments[department] = departments[department] || {};
+
+        departments[department][item.id] = {
+          dates: item.workdays_dates,
+          name: item.name,
+        };
+      });
+
+      return (
+        <HomePage {...props} />
+      );
+    }}
+  </Fetcher>
+
+export default Component;

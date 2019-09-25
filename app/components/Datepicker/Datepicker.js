@@ -24,16 +24,42 @@ class Datepicker extends React.PureComponent {
 
   onClick = () => this.setState({ open: !this.state.open });
 
+  convertDate = (date) => {
+    return new Intl.DateTimeFormat('ru-RU', {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit'
+    }).format(date);
+  }
+
+  setDisabledDates = ({ date, view }) => {
+    const { options } = this.props;
+
+    if (view === 'month') {
+      const tile = new Date(date).toISOString().substring(0, 10);
+
+      return !options.some(item => item === tile);
+    }
+
+    if (view === 'year') {
+      const tile = new Date(date).toISOString().substring(0, 7);
+
+      return !options.some(item => item.startsWith(tile));
+    }
+
+    return false;
+  }
+
   render() {
     const { options, onChange } = this.props;
     const { date: currentDate, open } = this.state;
 
-    const value = currentDate && String(currentDate) || 'Выберите';
+    const value = currentDate && this.convertDate(currentDate) || 'Выберите';
     const calendarClassNames = cn('calendar', open && 'open');
 
     return (
       <div className="datepicker">
-        <Button text={value} onClick={this.onClick} />
+        <Button isActive={Boolean(currentDate)} text={value} onClick={this.onClick} />
 
         {open &&
           <Calendar
@@ -42,6 +68,7 @@ class Datepicker extends React.PureComponent {
             onChange={this.onChange}
             value={currentDate}
             locale="ru-RU"
+            tileDisabled={this.setDisabledDates}
           />
         }
       </div>

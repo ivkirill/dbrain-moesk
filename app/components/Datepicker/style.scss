@@ -1,5 +1,6 @@
 .datepicker {
   position: relative;
+  padding-right: 24px;
 
   .calendar {
     position: absolute;
@@ -91,6 +92,11 @@
         &:hover abbr {
           color: #fff;
         }
+      }
+
+      &[disabled] {
+        background-color: transparent;
+        opacity: 0.5;
       }
     }
 

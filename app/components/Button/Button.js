@@ -7,13 +7,13 @@ import './style.scss';
 
 class Button extends React.PureComponent {
   handleClick = () => {
-    const { onClick, text } = this.props;
+    const { onClick, value } = this.props;
 
     if (!onClick) {
       return;
     }
 
-    return onClick(text);
+    return onClick(value);
   }
 
   render() {
@@ -37,6 +37,7 @@ class Button extends React.PureComponent {
 };
 
 Button.propTypes = {
+  value: PropTypes.string,
   text: PropTypes.string,
   className: PropTypes.string,
   link: PropTypes.oneOfType([
