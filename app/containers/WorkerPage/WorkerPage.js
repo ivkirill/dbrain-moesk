@@ -11,6 +11,7 @@ import Caption from 'components/Caption';
 import XRange from 'components/XRange';
 import ChartPie from 'components/ChartPie';
 import { BackIcon } from 'components/Icons';
+import graph from 'images/activity.png';
 import './style.scss';
 
 export default class WorkerPage extends React.Component {
@@ -32,10 +33,12 @@ export default class WorkerPage extends React.Component {
             second: 'numeric'
           }).format(date);
 
+          console.log(item.type);
+
           return {
             x: date.getTime(),
             x2: date2.getTime(),
-            y: i % 2 ? 0 : 1,
+            y: i % 2 ? 1: 0,
           };
         }),
         // ...work.map(item => {
@@ -164,7 +167,8 @@ export default class WorkerPage extends React.Component {
         </div>
 
         <div className="worker-activity">
-          <XRange series={seriesActivity} />
+          {/* <XRange series={seriesActivity} /> */}
+          <img src={graph} width="100%" />
         </div>
       </div>
     );
