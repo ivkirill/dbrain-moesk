@@ -1,7 +1,7 @@
 /*
- * FeaturePage
+ * WorkerPage
  *
- * List all the features
+ * Data about worker day activity
  */
 import React from 'react';
 import cn from 'classnames';
@@ -14,6 +14,75 @@ import { BackIcon } from 'components/Icons';
 import './style.scss';
 
 export default class WorkerPage extends React.Component {
+  getActivityData = () => {
+    const { activity, work } = this.props;
+
+    return [{
+      pointWidth: 20,
+      dataLabels: {
+        enabled: true
+      },
+      data: [
+        ...activity.map((item, i) => {
+          const date = new Date(item.start_at);
+          const date2 = new Date(item.end_at);
+          const time = new Intl.DateTimeFormat('ru-RU', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+          }).format(date);
+
+          return {
+            x: date.getTime(),
+            x2: date2.getTime(),
+            y: i % 2 ? 0 : 1,
+          };
+        }),
+        // ...work.map(item => {
+        //   const date = new Date(item.start_at);
+        //   const date2 = new Date(item.end_at);
+
+        //   console.log(item);
+
+        //   const time = new Intl.DateTimeFormat('ru-RU', {
+        //     hour: 'numeric',
+        //     minute: 'numeric',
+        //     second: 'numeric'
+        //   }).format(date);
+
+        //   return {
+        //     x: date.getTime(),
+        //     x2: date2.getTime(),
+        //     y: 1
+        //   };
+        // }),
+      ],
+    }];
+  }
+
+  getPieData = () => {
+    const { activity } = this.props;
+    const types = {};
+
+    activity.forEach(item => {
+      const name = item.type;
+      const date = new Date(item.start_at).getTime();
+      const date2 = new Date(item.end_at).getTime();
+      const duration = date2 - date;
+
+      types[name] = types[name] || { name };
+      types[name].y = (types[name].y || 0) + duration;
+    });
+
+    return [{
+      name: 'Активность',
+      colorByPoint: true,
+      data: Object.keys(types).map(function(key) {
+        return types[key];
+      }),
+    }];
+  }
+
   render() {
     const {
       date,
@@ -22,72 +91,12 @@ export default class WorkerPage extends React.Component {
       team,
       work_type,
       department,
-      activity,
-      work,
+
     } = this.props;
+
     const backClassNames = cn('worker-back-button', 'back');
-
-    const seriesActivity = [{
-      pointWidth: 20,
-      dataLabels: {
-        enabled: true
-      },
-      data: [
-        ...activity.map(item => {
-          const date = new Date(item.start_at);
-          const date2 = new Date(item.end_at);
-
-          console.log(item);
-
-          const time = new Intl.DateTimeFormat('ru-RU', {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-          }).format(date);
-
-          return {
-            x: date.getTime(),
-            x2: date2.getTime(),
-            y: 0
-          };
-        }),
-        ...work.map(item => {
-          const date = new Date(item.start_at);
-          const date2 = new Date(item.end_at);
-
-          console.log(item);
-
-          const time = new Intl.DateTimeFormat('ru-RU', {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-          }).format(date);
-
-          return {
-            x: date.getTime(),
-            x2: date2.getTime(),
-            y: 1
-          };
-        }),
-      ],
-    }]
-
-    const seriesPie = [{
-      name: 'Brands',
-      colorByPoint: true,
-      data: [{
-        name: 'Работа',
-        y: 48,
-      }, {
-        name: 'Производственная активность',
-        y: 37
-      }, {
-        name: 'Сопутствующие активности',
-        y: 21
-      }]
-    }]
-
-    console.log(seriesActivity);
+    const seriesActivity = this.getActivityData();
+    const seriesPie = this.getPieData();
 
     return (
       <div className="worker-page">
@@ -142,6 +151,8 @@ export default class WorkerPage extends React.Component {
               <div className="text">{team}</div>
             </div>
           </div>
+
+          <div className="worker-content-column"></div>
 
           <div className="worker-content-column">
             <div className="content-row">

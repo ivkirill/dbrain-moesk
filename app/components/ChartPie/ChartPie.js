@@ -29,8 +29,18 @@ class ChartPie extends React.Component {
           showInLegend: true
         }
       },
-      series: this.props.series,
-    };
+      tooltip: {
+        formatter: function() {
+            return this.point.name + " - " + Number(this.percentage).toFixed(2) + "%";
+        }
+      },
+      legend: {
+          labelFormatter: function() {
+              return this.name + " (" +  Number(this.percentage).toFixed(2) + "%)";
+          }
+      },
+        series: this.props.series,
+      };
 
     return (
       <HighchartsReact

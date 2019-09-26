@@ -1,20 +1,19 @@
 import React from 'react';
 import Fetcher from 'components/Fetcher';
+import LoadingIndicator from 'components/LoadingIndicator';
+import Error from 'containers/Error';
 import HomePage from './HomePage';
 
-const WORKERS_URL = 'http://hetz3.dbrain.io:23008/workers';
+const WORKERS_URL = 'https://history-moesk.ml.dbrain.io/workers';
 
 const Component = () =>
   <Fetcher url={WORKERS_URL}>
     {({ data, isLoading, error }) => {
-      if (!data) {
-        return <p>No data yet ...</p>;
-      }
       if (error) {
-        return <p>{error.message}</p>;
-      }
-      if (isLoading) {
-        return <p>Loading ...</p>;
+          return <Error error={error.message} />;
+        }
+      if (isLoading || !data) {
+        return <LoadingIndicator />;
       }
 
       const props = {

@@ -1,11 +1,10 @@
 import Loadable from 'react-loadable';
 import LoadingIndicator from 'components/LoadingIndicator';
-import HomePage from 'containers/HomePage';
 
-// const HomePage = Loadable({
-//   loader: () => import('containers/HomePage'),
-//   loading: LoadingIndicator,
-// });
+const HomePage = Loadable({
+  loader: () => import('containers/HomePage'),
+  loading: LoadingIndicator,
+});
 
 const WorkerPage = Loadable({
   loader: () => import('containers/WorkerPage'),
