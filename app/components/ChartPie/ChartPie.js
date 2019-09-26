@@ -18,7 +18,12 @@ class ChartPie extends React.Component {
       title: {
         text: ''
       },
-      colors: ["#000", "#444", '#AAA'],
+      colors: [
+        '#1356A8',
+        '#C60C31',
+        '#111111',
+        '#999999',
+      ],
       plotOptions: {
         pie: {
           allowPointSelect: true,
@@ -39,8 +44,10 @@ class ChartPie extends React.Component {
               return this.name + " (" +  Number(this.percentage).toFixed(2) + "%)";
           }
       },
-        series: this.props.series,
-      };
+      series: this.props.series,
+    };
+    console.log(this.props.series);
+    console.log(config.series);
 
     return (
       <HighchartsReact

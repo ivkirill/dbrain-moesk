@@ -16,6 +16,23 @@
 
   .worker-activity {
     margin-top: 24px;
+
+    .highcharts-point {
+      height: 72px;
+    }
+
+    .highcharts-color-1 {
+      transform: translateY(-44px);
+    }
+
+    .highcharts-color-2 {
+      transform: translateY(-88.5px);
+    }
+
+    .highcharts-color-3 {
+      transform: translateY(-121px);
+      height: 26px;
+    }
   }
 
   .content-row + .content-row {

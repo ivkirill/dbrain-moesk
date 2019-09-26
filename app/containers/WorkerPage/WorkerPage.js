@@ -11,95 +11,88 @@ import Caption from 'components/Caption';
 import XRange from 'components/XRange';
 import ChartPie from 'components/ChartPie';
 import { BackIcon } from 'components/Icons';
-import graph from 'images/activity.png';
 import './style.scss';
 
+const CATEGORY_WORK = 'Задача'
+
 export default class WorkerPage extends React.Component {
-  getActivityData = () => {
+  constructor(props) {
+    super(props);
     const { activity, work } = this.props;
 
-    return [{
-      pointWidth: 20,
-      dataLabels: {
-        enabled: true
-      },
-      data: [
-        ...activity.map((item, i) => {
-          const date = new Date(item.start_at);
-          const date2 = new Date(item.end_at);
-          const time = new Intl.DateTimeFormat('ru-RU', {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-          }).format(date);
-
-          console.log(item.type);
-
-          return {
-            x: date.getTime(),
-            x2: date2.getTime(),
-            y: i % 2 ? 1: 0,
-          };
-        }),
-        // ...work.map(item => {
-        //   const date = new Date(item.start_at);
-        //   const date2 = new Date(item.end_at);
-
-        //   console.log(item);
-
-        //   const time = new Intl.DateTimeFormat('ru-RU', {
-        //     hour: 'numeric',
-        //     minute: 'numeric',
-        //     second: 'numeric'
-        //   }).format(date);
-
-        //   return {
-        //     x: date.getTime(),
-        //     x2: date2.getTime(),
-        //     y: 1
-        //   };
-        // }),
-      ],
-    }];
-  }
-
-  getPieData = () => {
-    const { activity } = this.props;
     const types = {};
+    const categories = [];
 
-    activity.forEach(item => {
-      const name = item.type;
-      const date = new Date(item.start_at).getTime();
-      const date2 = new Date(item.end_at).getTime();
-      const duration = date2 - date;
+    function getItem(item, i) {
+      const start = new Date(item.start_at).getTime();
+      const end = new Date(item.end_at).getTime();
+      const duration = end - start;
+      const name = item.type || CATEGORY_WORK;
+      let index = 0;
 
-      types[name] = types[name] || { name };
-      types[name].y = (types[name].y || 0) + duration;
+      if (name) {
+        if (!types[name]) {
+          categories.push(name);
+          index = categories.length - 1;
+        }
+        types[name] = types[name] || { name, index };
+        types[name].y = (types[name].y || 0) + duration;
+        index = types[name].index;
+      }
+
+      // const time = new Intl.DateTimeFormat('ru-RU', {
+      //   hour: 'numeric',
+      //   minute: 'numeric',
+      //   second: 'numeric'
+      // }).format(date);
+
+      return {
+        x: start,
+        x2: end,
+        y: index,
+      };
+    }
+
+    const dataActivity = activity.map(getItem);
+    const dataWork = work.map(getItem);
+
+    const dataPie = [];
+
+    Object.keys(types).map(function(key) {
+      if (types[key].name !== CATEGORY_WORK) {
+        dataPie.push(types[key]);
+      }
     });
 
-    return [{
-      name: 'Активность',
-      colorByPoint: true,
-      data: Object.keys(types).map(function(key) {
-        return types[key];
-      }),
-    }];
+    this.state = {
+      configRange: {
+        series: [{
+          name: ' ',
+          pointPadding: 0,
+          groupPadding: 0,
+          pointWidth: 20,
+          dataLabels: {
+            enabled: true
+          },
+          data: [...dataActivity, ...dataWork],
+        }],
+        categories,
+      },
+      configPie: {
+        series: [{
+          name: 'Активность',
+          colorByPoint: true,
+          data: dataPie,
+        }],
+      },
+    }
   }
 
   render() {
-    const {
-      date,
-      unit,
-      role,
-      team,
-      work_type,
-      department,
-
-    } = this.props;
+    const { date, unit, role, team, work_type, department } = this.props;
+    const { configRange, configPie } = this.state;
 
     const backClassNames = cn('worker-back-button', 'back');
-    const seriesActivity = this.getActivityData();
-    const seriesPie = this.getPieData();
 
     return (
       <div className="worker-page">
@@ -161,14 +154,13 @@ export default class WorkerPage extends React.Component {
             <div className="content-row">
               <h4>Дневная статистика</h4>
 
-              <ChartPie series={seriesPie} />
+              <ChartPie {...configPie} />
             </div>
           </div>
         </div>
 
         <div className="worker-activity">
-          {/* <XRange series={seriesActivity} /> */}
-          <img src={graph} width="100%" />
+          <XRange {...configRange}  />
         </div>
       </div>
     );

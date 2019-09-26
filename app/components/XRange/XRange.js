@@ -18,13 +18,15 @@ class XRange extends React.Component {
       title: {
         text: ''
       },
-      xAxis: {
-        type: 'datetime'
-      },
       colors: [
-        '#002A5B',
+        '#1356A8',
         '#C60C31',
+        '#111111',
+        '#999999',
       ],
+      xAxis: {
+        type: 'datetime',
+      },
       yAxis: {
         title: {
           text: ''
@@ -32,8 +34,17 @@ class XRange extends React.Component {
         labels: {
           enabled: false,
         },
-        categories: ['Активность', 'Задача'],
-        reversed: true
+        plotBands: [{
+          color: '#FCFFC5',
+          zIndex: 5
+        }],
+        reversed: true,
+        categories: this.props.categories,
+      },
+      tooltip: {
+        outside: true,
+        followTouchMove: true,
+        followPointer: true,
       },
       legend: {
         enabled: false,
