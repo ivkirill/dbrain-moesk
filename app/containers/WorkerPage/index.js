@@ -6,7 +6,7 @@ import WorkerPage from './WorkerPage';
 
 const Component = ({ match }) => {
   const { params: { date, id } } = match;
-  const WORKERS_URL = `https://history-moesk.ml.dbrain.io/workers/${id}/workdays/${date}`;
+  const WORKERS_URL = `https://history-api.mo.dbrain.io/workers/${id}/workdays/${date}`;
 
   return (
     <Fetcher url={WORKERS_URL}>

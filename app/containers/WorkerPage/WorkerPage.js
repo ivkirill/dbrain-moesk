@@ -6,6 +6,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { Helmet } from 'react-helmet';
+import Highcharts from 'highcharts';
 import Button from 'components/Button';
 import Caption from 'components/Caption';
 import XRange from 'components/XRange';
@@ -13,7 +14,9 @@ import ChartPie from 'components/ChartPie';
 import { BackIcon } from 'components/Icons';
 import './style.scss';
 
-const CATEGORY_WORK = 'Задача'
+const CATEGORY_WORK = 'Задача';
+const COLORS = ['#1356A8', '#C60C31', '#111111', '#999999'];
+const COLOR_WORK = '#FFFFFF';
 
 export default class WorkerPage extends React.Component {
   constructor(props) {
@@ -21,13 +24,14 @@ export default class WorkerPage extends React.Component {
     const { activity, work } = this.props;
 
     const types = {};
-    const categories = [];
+    const categories = ['Активность', CATEGORY_WORK];
 
     function getItem(item, i) {
       const start = new Date(item.start_at).getTime();
       const end = new Date(item.end_at).getTime();
       const duration = end - start;
       const name = item.type || CATEGORY_WORK;
+      const isWork = name === CATEGORY_WORK;
       let index = 0;
 
       if (name) {
@@ -35,21 +39,29 @@ export default class WorkerPage extends React.Component {
           categories.push(name);
           index = categories.length - 1;
         }
+
         types[name] = types[name] || { name, index };
         types[name].y = (types[name].y || 0) + duration;
         index = types[name].index;
       }
 
-      // const time = new Intl.DateTimeFormat('ru-RU', {
-      //   hour: 'numeric',
-      //   minute: 'numeric',
-      //   second: 'numeric'
-      // }).format(date);
-
       return {
         x: start,
         x2: end,
-        y: index,
+        color: !isWork ? COLORS[index-2] : COLOR_WORK,
+        className: !isWork ? 'activity' : 'work',
+        y: 0,
+        name,
+        ...item,
+        ...(isWork && {
+          dataLabels: {
+            formatter() {
+              const x1 = Highcharts.dateFormat('%H:%m', this.point.x);
+              const x2 = Highcharts.dateFormat('%H:%m', this.point.x2);
+              return `${x1} - ${x2} ${this.point.title}`;
+            }
+          }
+        }),
       };
     }
 
@@ -68,15 +80,8 @@ export default class WorkerPage extends React.Component {
       configRange: {
         series: [{
           name: ' ',
-          pointPadding: 0,
-          groupPadding: 0,
-          pointWidth: 20,
-          dataLabels: {
-            enabled: true
-          },
           data: [...dataActivity, ...dataWork],
         }],
-        categories,
       },
       configPie: {
         series: [{
@@ -89,7 +94,7 @@ export default class WorkerPage extends React.Component {
   }
 
   render() {
-    const { date, unit, role, team, work_type, department } = this.props;
+    const { date, unit, role, team, work_type, department, worker_name } = this.props;
     const { configRange, configPie } = this.state;
 
     const backClassNames = cn('worker-back-button', 'back');
@@ -117,7 +122,7 @@ export default class WorkerPage extends React.Component {
 
             <div className="content-row">
               <h4>ФИО</h4>
-              <div className="text">Пупкин АП</div>
+              <div className="text">{worker_name}</div>
             </div>
 
             <div className="content-row">

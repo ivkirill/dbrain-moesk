@@ -4,7 +4,7 @@ import LoadingIndicator from 'components/LoadingIndicator';
 import Error from 'containers/Error';
 import HomePage from './HomePage';
 
-const WORKERS_URL = 'https://history-moesk.ml.dbrain.io/workers';
+const WORKERS_URL = 'https://history-api.mo.dbrain.io/workers';
 
 const Component = () =>
   <Fetcher url={WORKERS_URL}>

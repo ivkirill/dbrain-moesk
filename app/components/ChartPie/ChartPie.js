@@ -46,8 +46,6 @@ class ChartPie extends React.Component {
       },
       series: this.props.series,
     };
-    console.log(this.props.series);
-    console.log(config.series);
 
     return (
       <HighchartsReact

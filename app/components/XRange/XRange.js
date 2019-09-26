@@ -11,6 +11,7 @@ class XRange extends React.Component {
       chart: {
         type: 'xrange',
         backgroundColor: 'transparent',
+        height: '200px',
       },
       credits: {
         enabled: false
@@ -21,8 +22,6 @@ class XRange extends React.Component {
       colors: [
         '#1356A8',
         '#C60C31',
-        '#111111',
-        '#999999',
       ],
       xAxis: {
         type: 'datetime',
@@ -34,17 +33,28 @@ class XRange extends React.Component {
         labels: {
           enabled: false,
         },
-        plotBands: [{
-          color: '#FCFFC5',
-          zIndex: 5
-        }],
         reversed: true,
-        categories: this.props.categories,
+      },
+      plotOptions: {
+        series: {
+          dataLabels: {
+            enabled: true,
+            inside: true
+          }
+        }
       },
       tooltip: {
         outside: true,
         followTouchMove: true,
         followPointer: true,
+        split: false,
+        formatter () {
+          const x1 = Highcharts.dateFormat('%H:%m', this.x);
+          const x2 = Highcharts.dateFormat('%H:%m', this.x2);
+          const header = `<div style="font-size:10px">${x1} - ${x2}</div>`;
+          const body = `<div> - <b>${this.key}</b></div>`;
+          return header + body;
+        },
       },
       legend: {
         enabled: false,
