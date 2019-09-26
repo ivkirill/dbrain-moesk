@@ -127,7 +127,7 @@ export default class WorkerPage extends React.Component {
 
             <div className="content-row">
               <h4>Подразделение</h4>
-              <div className="text">8 РЭР УКС СЗО</div>
+              <div className="text">{unit}</div>
             </div>
 
             <div className="content-row">
