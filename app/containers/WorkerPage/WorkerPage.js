@@ -56,8 +56,9 @@ export default class WorkerPage extends React.Component {
         ...(isWork && {
           dataLabels: {
             formatter() {
-              const x1 = Highcharts.dateFormat('%H:%m', this.point.x);
-              const x2 = Highcharts.dateFormat('%H:%m', this.point.x2);
+              const x1 = Highcharts.dateFormat('%H:%M', this.point.x);
+              const x2 = Highcharts.dateFormat('%H:%M', this.point.x2);
+
               return `${x1} - ${x2} ${this.point.title}`;
             }
           }
