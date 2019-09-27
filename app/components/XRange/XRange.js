@@ -49,7 +49,6 @@ class XRange extends React.Component {
         followPointer: true,
         split: false,
         formatter () {
-          console.log(this);
           const x1 = Highcharts.dateFormat('%H:%M', this.x);
           const x2 = Highcharts.dateFormat('%H:%M', this.x2);
           const header = `<div style="font-size:10px">${x1} - ${x2}</div>`;
