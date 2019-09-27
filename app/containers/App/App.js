@@ -17,8 +17,8 @@ import './style.scss';
 const App = () => (
   <div className="app-wrapper">
     <Helmet
-      titleTemplate="%s - dbrain"
-      defaultTitle="dbrain"
+      titleTemplate="%s"
+      defaultTitle=""
     >
     </Helmet>
 

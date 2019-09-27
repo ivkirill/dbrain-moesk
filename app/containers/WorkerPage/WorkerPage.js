@@ -104,10 +104,6 @@ export default class WorkerPage extends React.Component {
       <div className="worker-page">
         <Helmet>
           <title>{`Трекер ${unit} за ${date}`}</title>
-          <meta
-            name="description"
-            content="Feature page of React.js Boilerplate application"
-          />
         </Helmet>
 
         <Button className={backClassNames} link="/" color="blue" text={<BackIcon />} />
